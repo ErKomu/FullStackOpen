@@ -2,8 +2,10 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 
 const Countries = ({countries, filter}) => {
+  
   const [singleCountryToShow, setSingleCountryToShow] = useState(null)
   const [currentFilter, setCurrentFilter] = useState(null)
+
   if(currentFilter !== filter){
     setSingleCountryToShow(null)
     setCurrentFilter(filter)
