@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Pertin Eräblogi",
-    "author": "Pertti Eräreikä",
-    "url": "eräreikä.fi",
+    "title": "Jorma Eräblogi",
+    "author": "Jorma Kyrsämies",
+    "url": "Jormanblogi.fi",
     "likes": 9
 }
