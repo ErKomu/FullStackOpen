@@ -2,8 +2,9 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "Jorma Eräblogi",
-    "author": "Jorma Kyrsämies",
-    "url": "Jormanblogi.fi",
-    "likes": 9
+    "title": "Testi blogi 2",
+    "author": "Testi Testinen",
+    "url": "www.testi.fi",
+    "likes": 9,
+    "userId": "64ef28c523e66f329d3a5f95"
 }
