@@ -5,7 +5,7 @@ const Blog = require('../models/blog')
 
 const api = supertest(app)
 
-describe('correct number of blogs', () => {
+describe('Get blogs with correct data', () => {
 
     beforeAll(async () => {
         await mongoose.connect(process.env.TEST_MONGODB_URI, {
@@ -43,41 +43,6 @@ describe('correct number of blogs', () => {
         expect(response.body).toHaveLength(2)
     })
 
-    afterAll(async () => {
-        await mongoose.connection.close()
-    })
-})
-
-describe('correct id field', () => {
-
-    beforeAll(async () => {
-        await mongoose.connect(process.env.TEST_MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        })
-    })
-
-    beforeEach(async () => {
-        await Blog.deleteMany({})
-
-        const initialBlogs = [
-            {
-                title: 'Blogi 1',
-                author: 'Kirjoittaja 1',
-                url: 'http://www.example.com/blog1',
-                likes: 10,
-            },
-            {
-                title: 'Blogi 2',
-                author: 'Kirjoittaja 2',
-                url: 'http://www.example.com/blog2',
-                likes: 5,
-            },
-        ]
-
-        await Blog.insertMany(initialBlogs)
-    })
-
     test('id field is defined', async () => {
         const response = await api.get('/api/blogs')
 
@@ -89,7 +54,7 @@ describe('correct id field', () => {
     })
 })
 
-describe('adding a blog', () => {
+describe('Adding, Updating and Deleting a blog', () => {
 
     beforeAll(async () => {
         await mongoose.connect(process.env.TEST_MONGODB_URI, {
@@ -135,41 +100,6 @@ describe('adding a blog', () => {
         expect(response.body).toHaveLength(3)
         expect(titles).toContain('Uusi blogi')
     })
-      
-    afterAll(async () => {
-        await mongoose.connection.close();
-    });
-}, 10000)
-
-describe('missing likes field', () => {
-
-    beforeAll(async () => {
-        await mongoose.connect(process.env.TEST_MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        })
-    })
-
-    beforeEach(async () => {
-        await Blog.deleteMany({});
-
-        const initialBlogs = [
-            {
-                title: 'Blogi 1',
-                author: 'Kirjoittaja 1',
-                url: 'http://www.example.com/blog1',
-                likes: 10,
-            },
-            {
-                title: 'Blogi 2',
-                author: 'Kirjoittaja 2',
-                url: 'http://www.example.com/blog2',
-                likes: 5,
-            },
-        ]
-
-        await Blog.insertMany(initialBlogs);
-    });
 
     test('if likes is missing, it is set to 0', async () => {
         const newBlog = {
@@ -183,75 +113,7 @@ describe('missing likes field', () => {
         expect(response.body.likes).toBe(0);
     });
 
-    afterAll(async () => {
-        await mongoose.connection.close();
-    });
-})
-
-describe('blog can be deleted', () => {
-
-    beforeAll(async () => {
-        await mongoose.connect(process.env.TEST_MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        })
-    })
-
-    beforeEach(async () => {
-        await Blog.deleteMany({});
-
-        const initialBlogs = [
-            {
-                title: 'Blogi 1',
-                author: 'Kirjoittaja 1',
-                url: 'http://www.example.com/blog1',
-                likes: 10,
-            },
-            {
-                title: 'Blogi 2',
-                author: 'Kirjoittaja 2',
-                url: 'http://www.example.com/blog2',
-                likes: 5,
-            },
-        ]
-
-        await Blog.insertMany(initialBlogs);
-    });
-
-    test('a blog can be deleted', async () => {
-        const blogsAtStart = await Blog.find({});
-        const blogToDelete = blogsAtStart[0];
-
-        await api.delete(`/api/blogs/${blogToDelete._id}`).expect(204);
-
-        const blogsAtEnd = await Blog.find({});
-        expect(blogsAtEnd).toHaveLength(blogsAtStart.length - 1);
-
-        const titles = blogsAtEnd.map((blog) => blog.title);
-        expect(titles).not.toContain(blogToDelete.title);
-    });
-
-    afterAll(async () => {
-        await mongoose.connection.close();
-    });
-
-})
-
-describe('blog can be updated', () => {
-
-    beforeAll(async () => {
-        await mongoose.connect(process.env.TEST_MONGODB_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        })
-    })
-
-    beforeEach(async () => {
-        await Blog.deleteMany({});
-      });
-      
-      test('updating blog likes', async () => {
-        console.log('testi alkaa')
+    test('updating blog likes', async () => {
         const newBlog = {
           title: 'Uusi blogi',
           author: 'Uusi kirjoittaja',
@@ -260,7 +122,6 @@ describe('blog can be updated', () => {
         };
       
         const savedBlog = await api.post('/api/blogs').send(newBlog);
-        console.log('blogi tallennettu')
       
         const updatedBlog = {
           ...savedBlog.body,
@@ -276,7 +137,20 @@ describe('blog can be updated', () => {
         console.log('testi loppuu')
       }, 15000);
       
-      afterAll(async () => {
+    afterAll(async () => {
         await mongoose.connection.close();
-      });
+    });
+
+    test('a blog can be deleted', async () => {
+        const blogsAtStart = await Blog.find({});
+        const blogToDelete = blogsAtStart[0];
+
+        await api.delete(`/api/blogs/${blogToDelete._id}`).expect(204);
+
+        const blogsAtEnd = await Blog.find({});
+        expect(blogsAtEnd).toHaveLength(blogsAtStart.length - 1);
+
+        const titles = blogsAtEnd.map((blog) => blog.title);
+        expect(titles).not.toContain(blogToDelete.title);
+    });
 })
