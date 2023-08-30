@@ -169,7 +169,7 @@ describe('Adding, Updating and Deleting a blog', () => {
         const updatedBlog = {
           ...savedBlog.body,
           likes: 10,
-          user: user.id, // Update the user ID as well
+          user: user.id,
         };
       
         const response = await api
