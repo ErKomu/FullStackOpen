@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY0ZWYyOGM1MjNlNjZmMzI5ZDNhNWY5NSIsImlhdCI6MTY5MzQxODE4NSwiZXhwIjoxNjkzNDIxNzg1fQ.De68LORok7KkRaWNqDOrZlHQWDKPyGybJ92MAqhqDPk
 
 {
-    "title": "Testi blogi 5",
+    "title": "Testi blogi 7",
     "author": "Testi Testinen",
     "url": "www.testi.fi",
     "likes": 9,
