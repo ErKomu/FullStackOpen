@@ -87,7 +87,7 @@ describe('Adding, Updating and Deleting a blog', () => {
             },
         ];
 
-        await Blog.insertMany(initialBlogs);
+        await Blog.insertMany(initialBlogs)
 
         await User.deleteMany({});
 
@@ -100,25 +100,23 @@ describe('Adding, Updating and Deleting a blog', () => {
             {
                 username: 'user2',
                 name: 'user2',
-                password: 'securepassword',
+                password: 'password456',
             },
         ]
 
         const hashedUsers = await Promise.all(
             initialUsers.map(async (user) => {
-                const passwordHash = await bcrypt.hash(user.password, 10);
-                return { ...user, passwordHash };
+                const passwordHash = await bcrypt.hash(user.password, 10)
+                return { ...user, passwordHash }
             })
         );
 
-        await User.insertMany(hashedUsers);
+        await User.insertMany(hashedUsers)
     });
 
     test('a new blog can be added', async () => {
-        const user = await User.findOne({ username: 'user1' });
-
-        const token = jwt.sign({ id: user.id }, process.env.SECRET);
-
+        const user = await User.findOne({ username: 'user1' })
+        const token = jwt.sign({ id: user.id }, process.env.SECRET)
 
         const newBlog = {
             title: 'Uusi blogi',
@@ -133,19 +131,19 @@ describe('Adding, Updating and Deleting a blog', () => {
             .set('Authorization', `Bearer ${token}`)
             .send(newBlog)
             .expect(201)
-            .expect('Content-Type', /application\/json/);
+            .expect('Content-Type', /application\/json/)
 
-        const response = await api.get('/api/blogs');
-        const titles = response.body.map((blog) => blog.title);
+        const response = await api.get('/api/blogs')
+        const titles = response.body.map((blog) => blog.title)
 
-        expect(response.body).toHaveLength(3);
-        expect(titles).toContain('Uusi blogi');
+        expect(response.body).toHaveLength(3)
+        expect(titles).toContain('Uusi blogi')
     })
 
     test('if likes is missing, it is set to 0', async () => {
-        const user = await User.findOne({ username: 'user1' });
+        const user = await User.findOne({ username: 'user1' })
 
-        const token = jwt.sign({ id: user.id }, process.env.SECRET);
+        const token = jwt.sign({ id: user.id }, process.env.SECRET)
 
         const newBlog = {
             title: 'Uusi blogi',
@@ -161,12 +159,12 @@ describe('Adding, Updating and Deleting a blog', () => {
             .expect(201)
             .expect('Content-Type', /application\/json/);
 
-        expect(response.body.likes).toBe(0);
+        expect(response.body.likes).toBe(0)
     })
 
     test('returns 400 Bad Request if title or url is missing', async () => {
-        const user = await User.findOne({ username: 'user1' });
-        const token = jwt.sign({ id: user.id }, process.env.SECRET);
+        const user = await User.findOne({ username: 'user1' })
+        const token = jwt.sign({ id: user.id }, process.env.SECRET)
     
         const newBlogWithoutTitle = {
           author: 'Uusi kirjoittaja',
@@ -196,9 +194,8 @@ describe('Adding, Updating and Deleting a blog', () => {
       });
 
     test('updating blog likes', async () => {
-        const user = await User.findOne({ username: 'user1' });
-
-        const token = jwt.sign({ id: user.id }, process.env.SECRET);
+        const user = await User.findOne({ username: 'user1' })
+        const token = jwt.sign({ id: user.id }, process.env.SECRET)
 
         const newBlog = {
             title: 'Uusi blogi',
@@ -225,7 +222,7 @@ describe('Adding, Updating and Deleting a blog', () => {
             .send(updatedBlog)
             .expect(200);
 
-        expect(response.body.likes).toBe(10);
+        expect(response.body.likes).toBe(10)
     }, 15000);
 
     test('a blog can be deleted by its creator', async () => {
@@ -250,18 +247,18 @@ describe('Adding, Updating and Deleting a blog', () => {
         await api
             .delete(`/api/blogs/${savedBlog.body.id}`)
             .set('Authorization', `Bearer ${token}`)
-            .expect(204);
+            .expect(204)
 
         const blogsAtEnd = await Blog.find({});
-        expect(blogsAtEnd).toHaveLength(initialBlogs.length - 1);
+        expect(blogsAtEnd).toHaveLength(initialBlogs.length - 1)
 
-        const titles = blogsAtEnd.map((blog) => blog.title);
-        expect(titles).not.toContain(savedBlog.body.title);
+        const titles = blogsAtEnd.map((blog) => blog.title)
+        expect(titles).not.toContain(savedBlog.body.title)
     });
 
     test('a blog cannot be deleted by a different user', async () => {
-        const user1 = await User.findOne({ username: 'user1' });
-        const user2 = await User.findOne({ username: 'user2' });
+        const user1 = await User.findOne({ username: 'user1' })
+        const user2 = await User.findOne({ username: 'user2' })
 
         const user1Token = jwt.sign({ id: user1.id }, process.env.SECRET)
         const user2Token = jwt.sign({ id: user2.id }, process.env.SECRET)
@@ -284,13 +281,13 @@ describe('Adding, Updating and Deleting a blog', () => {
         await api
             .delete(`/api/blogs/${savedBlog.body.id}`)
             .set('Authorization', `Bearer ${user2Token}`)
-            .expect(401);
+            .expect(401)
 
         const blogsAtEnd = await Blog.find({});
-        expect(blogsAtEnd).toHaveLength(initialBlogs.length);
+        expect(blogsAtEnd).toHaveLength(initialBlogs.length)
     });
 
     afterAll(async () => {
-        await mongoose.connection.close();
+        await mongoose.connection.close()
     });
 })
