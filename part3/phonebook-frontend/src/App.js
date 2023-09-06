@@ -12,7 +12,7 @@ const App = () => {
   const [filter, setFilter] = useState('')
   const [notification, setNotification] = useState({message: '', type: ''})
 
-  const baseUrl = 'https://phonebookbackend.onrender.com/api/persons'
+  const baseUrl = 'http://localhost:3001/api/persons'
   const request = axios.get(baseUrl)
 
   useEffect(() => {

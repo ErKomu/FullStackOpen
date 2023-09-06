@@ -72,10 +72,14 @@ app.get('/info', (request, response) => {
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
-  console.log(body)
 
-  if (body.name === undefined) {
-    return response.status(400).json({ error: 'name missing' })
+  if (!body.name || !body.number) {
+    return response.status(400).json({ error: 'name or number missing' })
+  }
+
+  const existingPerson = Person.findOne({ name: body.name });
+  if (existingPerson) {
+    return response.status(400).json({ error: 'name must be unique' });
   }
 
   const person = new Person({
@@ -118,7 +122,7 @@ const errorHandler = (error, request, response, next) => {
 app.use(errorHandler)
 
 //Start listening
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
