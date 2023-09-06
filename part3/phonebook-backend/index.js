@@ -44,7 +44,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 })
 
 app.put('/api/persons/:id', async (request, response, next) => {
-  const { name, number } = request.body
+  const { number } = request.body
 
   try {
     const updatedPerson = await Person.findByIdAndUpdate(
@@ -75,7 +75,7 @@ app.get('/info', (request, response) => {
 })
 
 app.post('/api/persons', async (request, response, next) => {
-  const body = request.body;
+  const body = request.body
 
   if (!body.name || !body.number) {
     return response.status(400).json({ error: 'name or number missing' })
@@ -91,14 +91,14 @@ app.post('/api/persons', async (request, response, next) => {
     const person = new Person({
       name: body.name,
       number: body.number,
-    });
+    })
 
-    const savedPerson = await person.save();
-    response.json(savedPerson);
+    const savedPerson = await person.save()
+    response.json(savedPerson)
   } catch (error) {
     next(error)
   }
-});
+})
 
 app.use(express.static('build'))
 app.use(express.json())
