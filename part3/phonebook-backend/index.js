@@ -43,19 +43,22 @@ app.get('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.put('/api/persons/:id', (request, response, next) => {
+app.put('/api/persons/:id', async (request, response, next) => {
   const { name, number } = request.body
 
-  Person.findByIdAndUpdate(
-    request.params.id,
-    { name, number },
-    { new: true, runValidators: true, context: 'query' }
-  )
-    .then(updatedPerson => {
-      response.json(updatedPerson)
-    })
-    .catch(error => next(error))
+  try {
+    const updatedPerson = await Person.findByIdAndUpdate(
+      request.params.id,
+      { number },
+      { new: true, runValidators: true, context: 'query' }
+    )
+
+    response.json(updatedPerson)
+  } catch (error) {
+    next(error)
+  }
 })
+
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
@@ -71,31 +74,31 @@ app.get('/info', (request, response) => {
   })
 })
 
-app.post('/api/persons', (request, response, next) => {
-  const body = request.body
+app.post('/api/persons', async (request, response, next) => {
+  const body = request.body;
 
   if (!body.name || !body.number) {
     return response.status(400).json({ error: 'name or number missing' })
   }
 
-  const existingPerson = Person.findOne({ name: body.name });
-  if (existingPerson) {
-    return response.status(400).json({ error: 'name must be unique' });
+  try {
+    const existingPerson = await Person.findOne({ name: body.name })
+
+    if (existingPerson) {
+      return response.status(400).json({ error: 'name must be unique' })
+    }
+
+    const person = new Person({
+      name: body.name,
+      number: body.number,
+    });
+
+    const savedPerson = await person.save();
+    response.json(savedPerson);
+  } catch (error) {
+    next(error)
   }
-
-  const person = new Person({
-    name: body.name,
-    number: body.number,
-  })
-
-  person.save()
-    .then(savedPerson => {
-      response.json(savedPerson)
-    })
-    .catch(error => next(error))
-})
-
-//Error processing
+});
 
 app.use(express.static('build'))
 app.use(express.json())
