@@ -12,7 +12,7 @@ const App = () => {
   const [filter, setFilter] = useState('')
   const [notification, setNotification] = useState({message: '', type: ''})
 
-  const baseUrl = 'http://localhost:3001/api/persons'
+  const baseUrl = '/api/persons'
   const request = axios.get(baseUrl)
 
   useEffect(() => {
