@@ -57,7 +57,7 @@ const App = () => {
   }
 
   const handleCreateBlog = async (blogObject) => {
-    console.log('handleCreate called')
+    //console.log('handleCreate called')
     try {
       const blog = await blogService.create(blogObject)
       setBlogs(blogs.concat(blog))
@@ -77,8 +77,8 @@ const App = () => {
   const blogForm = () => {
     return (
       <div>
-        <Togglable buttonLabel="Show blog form">
-          <BlogForm handleCreateBlog={handleCreateBlog}/>
+        <Togglable showButtonLabel="Show blog form" hideButtonLabel="cancel">
+          <BlogForm handleCreateBlog={handleCreateBlog} />
         </Togglable>
       </div>
     )
@@ -118,9 +118,13 @@ const App = () => {
       <h2>blogs</h2>
       <p>{user.name} logged in</p>
       <button onClick={handleLogout}>logout</button>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      {blogs.map(blog => (
+        <div key={blog.id}>
+          <Blog blog={blog} blogs={blogs} setBlogs={setBlogs}/>
+          <br />
+        </div>
+      ))}
+
     </div>
   )
 
