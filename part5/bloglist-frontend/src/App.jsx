@@ -112,21 +112,24 @@ const App = () => {
   )
 
 
-  const mainView = () => (
+  const mainView = () => {
+
+    return (
     <div>
       {blogForm()}
       <h2>blogs</h2>
       <p>{user.name} logged in</p>
       <button onClick={handleLogout}>logout</button>
-      {blogs.map(blog => (
+      {blogs
+      .sort((a, b) => b.likes - a.likes)
+      .map(blog => (
         <div key={blog.id}>
           <Blog blog={blog} blogs={blogs} setBlogs={setBlogs}/>
           <br />
         </div>
       ))}
-
     </div>
-  )
+  )}
 
   return (
     <div>

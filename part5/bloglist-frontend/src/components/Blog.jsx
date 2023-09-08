@@ -10,6 +10,16 @@ const Blog = ({ blog, blogs, setBlogs }) => {
     marginBottom: 5
   }
 
+  const handleRemove = async () => {
+    try {
+      await blogService.remove(blog.id)
+      const updatedBlogs = blogs.filter(b => b.id !== blog.id);
+      setBlogs(updatedBlogs)
+    } catch (exception) {
+      console.error(exception)
+    }
+  }
+
   const handleLike = async () => {
     try {
       const updatedBlog = { ...blog, likes: blog.likes + 1 }
@@ -25,6 +35,8 @@ const Blog = ({ blog, blogs, setBlogs }) => {
       console.error(exception)
     }
   }
+
+  const showWhenAuthorized = { display: blog.user.username === JSON.parse(window.localStorage.getItem('loggedBlogappUser')).username ? '' : 'none' }
   
   return (
     <div style={blogStyle}>
@@ -37,6 +49,9 @@ const Blog = ({ blog, blogs, setBlogs }) => {
         <br />
         {blog.author}
         <br />
+        <div style={showWhenAuthorized}>
+        <button onClick={handleRemove}>remove</button>
+        </div>
       </Togglable>
     </div>
   )
