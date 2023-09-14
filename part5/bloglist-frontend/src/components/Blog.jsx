@@ -12,9 +12,11 @@ const Blog = ({ blog, blogs, setBlogs }) => {
 
   const handleRemove = async () => {
     try {
-      await blogService.remove(blog.id)
-      const updatedBlogs = blogs.filter(b => b.id !== blog.id);
-      setBlogs(updatedBlogs)
+      if (window.confirm(`Are you sure you want to remove blog ${blog.title} by ${blog.author}?`)) {
+        await blogService.remove(blog.id)
+        const updatedBlogs = blogs.filter(b => b.id !== blog.id)
+        setBlogs(updatedBlogs)
+      }
     } catch (exception) {
       console.error(exception)
     }
@@ -25,10 +27,10 @@ const Blog = ({ blog, blogs, setBlogs }) => {
       const updatedBlog = { ...blog, likes: blog.likes + 1 }
       const response = await blogService.update(updatedBlog)
       const i = blogs.findIndex(b => b.id === blog.id)
-  
+
       if (i !== -1) {
-        const updatedBlogs = [...blogs];
-        updatedBlogs[i] = updatedBlog;
+        const updatedBlogs = [...blogs]
+        updatedBlogs[i] = updatedBlog
         setBlogs(updatedBlogs)
       }
     } catch (exception) {
@@ -37,10 +39,10 @@ const Blog = ({ blog, blogs, setBlogs }) => {
   }
 
   const showWhenAuthorized = { display: blog.user.username === JSON.parse(window.localStorage.getItem('loggedBlogappUser')).username ? '' : 'none' }
-  
+
   return (
     <div style={blogStyle}>
-      {blog.title} 
+      {blog.title}
       <Togglable showButtonLabel='view' hideButtonLabel='hide'>
         {blog.url}
         <br />
@@ -50,7 +52,7 @@ const Blog = ({ blog, blogs, setBlogs }) => {
         {blog.author}
         <br />
         <div style={showWhenAuthorized}>
-        <button onClick={handleRemove}>remove</button>
+          <button onClick={handleRemove}>remove</button>
         </div>
       </Togglable>
     </div>
