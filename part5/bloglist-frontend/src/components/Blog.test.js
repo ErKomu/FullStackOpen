@@ -1,6 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen, act} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 import { createTestScheduler } from 'jest'
 
@@ -8,7 +9,7 @@ test('renders title', () => {
   const blog = {
     title: 'Component testing is done with react-testing-library',
     author: 'Test Aurhor',
-    url: 'Test url',
+    url: 'Test Url',
     likes: 0,
     user: 'Test User'
   }
@@ -26,7 +27,7 @@ test('renders content when view button clicked', () => {
   const blog = {
     title: 'Component testing is done with react-testing-library',
     author: 'Test Aurhor',
-    url: 'Test url',
+    url: 'Test Url',
     likes: 0,
     user: {name: 'Test User'}
   }
@@ -47,4 +48,26 @@ test('renders content when view button clicked', () => {
   expect(screen.getByText((content, element) => content.includes(blog.user.name))).toBeDefined()
 })
 
+test('like button click calls event handler twice', async () => {
+  const blog = {
+    title: 'Component testing is done with react-testing-library',
+    author: 'Test Author',
+    url: 'Test Url',
+    likes: 0,
+    user: 'Test User',
+  };
 
+  const loggedInUser = { username: 'Test User' }
+  window.localStorage.setItem('loggedBlogappUser', JSON.stringify(loggedInUser))
+
+  const mockHandler = jest.fn()
+
+  render(<Blog blog={blog} handleLike={mockHandler} />)
+
+  const user = userEvent.setup()
+  const button = screen.getByText('like')
+  await user.click(button)
+  await user.click(button)
+
+  expect(mockHandler.mock.calls).toHaveLength(2);
+})
