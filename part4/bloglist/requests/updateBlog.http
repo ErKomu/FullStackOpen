@@ -2,6 +2,7 @@ PUT http://localhost:3003/api/blogs/64ef35c4c087a61dfdb2bd4d
 Content-Type: application/json
 
 {
+    "id": "64ef35c4c087a61dfdb2bd4d",
     "title": "Pertin Eräblogi",
     "author": "Pertti Eräreikä",
     "url": "eräreikä.fi",

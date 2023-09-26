@@ -41,7 +41,7 @@ const Blog = ({ blog, blogs, setBlogs }) => {
   const showWhenAuthorized = { display: blog.user.username === JSON.parse(window.localStorage.getItem('loggedBlogappUser')).username ? '' : 'none' }
 
   return (
-    <div style={blogStyle}>
+    <div className='blog' style={blogStyle}>
       {blog.title}
       <Togglable showButtonLabel='view' hideButtonLabel='hide'>
         {blog.url}
@@ -50,6 +50,8 @@ const Blog = ({ blog, blogs, setBlogs }) => {
         <button onClick={handleLike}>like</button>
         <br />
         {blog.author}
+        <br />
+        {blog.user.name}
         <br />
         <div style={showWhenAuthorized}>
           <button onClick={handleRemove}>remove</button>
