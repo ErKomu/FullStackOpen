@@ -10,8 +10,7 @@ const Blog = ({ blog, blogs, setBlogs, handleLike, handleRemove }) => {
     marginBottom: 5
   }
 
-  const showWhenAuthorized = { display: blog.user.username === JSON.parse(window.localStorage.getItem('loggedBlogappUser')).username ? '' : 'none' }
-
+  const showWhenAuthorized = { display: blog.user.name === JSON.parse(window.localStorage.getItem('loggedBlogappUser')).username ? '' : 'none' }
   return (
     <div className='blog' style={blogStyle}>
       {blog.title}

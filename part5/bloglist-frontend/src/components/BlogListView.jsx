@@ -65,12 +65,14 @@ const BlogListView = ({ blogs, setBlogs, setNotification, user, setUser }) => {
       <button onClick={handleLogout}>logout</button>
       {blogs
         .sort((a, b) => b.likes - a.likes)
-        .map(blog => (
+        .map(blog => {
+          console.log(blog)
+          return(
           <div key={blog.id}>
             <Blog blog={blog} blogs={blogs} setBlogs={setBlogs} handleLike={handleLike} handleRemove={handleRemove} />
             <br />
           </div>
-        ))}
+        )})}
     </div>
   )
 }
