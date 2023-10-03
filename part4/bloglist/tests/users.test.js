@@ -20,14 +20,14 @@ test('creating a new user', async () => {
   const newUser = {
     username: 'newuser',
     password: 'password123',
-  };
+  }
 
   await api
     .post('/api/users')
     .send(newUser)
     .expect(201)
     .expect('Content-Type', /application\/json/);
-});
+})
 
 test('creating a user with too short username or password', async () => {
   const invalidUser = {
