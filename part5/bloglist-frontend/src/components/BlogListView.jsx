@@ -10,7 +10,7 @@ const BlogListView = ({ blogs, setBlogs, setNotification, user, setUser }) => {
     setUser(null)
   }
 
-  const handleRemove = async ({blog}) => {
+  const handleRemove = async ({ blog }) => {
     try {
       if (window.confirm(`Are you sure you want to remove blog ${blog.title} by ${blog.author}?`)) {
         await blogService.remove(blog.id)
@@ -22,7 +22,7 @@ const BlogListView = ({ blogs, setBlogs, setNotification, user, setUser }) => {
     }
   }
 
-  const handleLike = async ({blog}) => {
+  const handleLike = async ({ blog }) => {
     try {
       const updatedBlog = { ...blog, likes: blog.likes + 1 }
       const response = await blogService.update(updatedBlog)
@@ -70,11 +70,11 @@ const BlogListView = ({ blogs, setBlogs, setNotification, user, setUser }) => {
         .map(blog => {
           console.log(blog)
           return(
-          <div key={blog.id}>
-            <Blog blog={blog} handleLike={handleLike} handleRemove={handleRemove} />
-            <br />
-          </div>
-        )})}
+            <div key={blog.id}>
+              <Blog blog={blog} handleLike={handleLike} handleRemove={handleRemove} />
+              <br />
+            </div>
+          )})}
     </div>
   )
 }

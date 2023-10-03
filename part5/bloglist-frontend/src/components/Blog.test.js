@@ -1,6 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom'
-import { render, screen, act} from '@testing-library/react'
+import { render, screen, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 import { createTestScheduler } from 'jest'
@@ -14,8 +14,8 @@ test('renders title', () => {
     user: 'Test User'
   }
 
-  const loggedInUser = { username: 'Test User' };
-  window.localStorage.setItem('loggedBlogappUser', JSON.stringify(loggedInUser));
+  const loggedInUser = { username: 'Test User' }
+  window.localStorage.setItem('loggedBlogappUser', JSON.stringify(loggedInUser))
 
   render(<Blog blog={blog} />)
 
@@ -29,17 +29,17 @@ test('renders content when view button clicked', () => {
     author: 'Test Aurhor',
     url: 'Test Url',
     likes: 0,
-    user: {name: 'Test User'}
+    user: { name: 'Test User' }
   }
 
-  const loggedInUser = { username: 'Test User' };
-  window.localStorage.setItem('loggedBlogappUser', JSON.stringify(loggedInUser));
+  const loggedInUser = { username: 'Test User' }
+  window.localStorage.setItem('loggedBlogappUser', JSON.stringify(loggedInUser))
 
   const component = render(<Blog blog={blog} />)
   const button = component.getByText('view')
   act(() => {
     button.click()
-  });
+  })
 
   expect(screen.getByText(blog.title)).toBeDefined()
   expect(screen.getByText((content, element) => content.includes(blog.author))).toBeDefined()
@@ -55,7 +55,7 @@ test('like button click calls event handler twice', async () => {
     url: 'Test Url',
     likes: 0,
     user: 'Test User',
-  };
+  }
 
   const loggedInUser = { username: 'Test User' }
   window.localStorage.setItem('loggedBlogappUser', JSON.stringify(loggedInUser))
@@ -69,5 +69,5 @@ test('like button click calls event handler twice', async () => {
   await user.click(button)
   await user.click(button)
 
-  expect(mockHandler.mock.calls).toHaveLength(2);
+  expect(mockHandler.mock.calls).toHaveLength(2)
 })

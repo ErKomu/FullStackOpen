@@ -18,14 +18,14 @@ const Blog = ({ blog, handleLike, handleRemove }) => {
         {blog.url}
         <br />
         likes {blog.likes}
-        <button onClick={() => handleLike({blog})}>like</button>
+        <button onClick={() => handleLike({ blog })}>like</button>
         <br />
         {blog.author}
         <br />
         {blog.user.name}
         <br />
         <div style={showWhenAuthorized}>
-          <button onClick={() => handleRemove({blog})}>remove</button>
+          <button onClick={() => handleRemove({ blog })}>remove</button>
         </div>
       </Togglable>
     </div>

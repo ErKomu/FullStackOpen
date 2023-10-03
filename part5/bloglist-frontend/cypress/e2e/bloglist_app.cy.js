@@ -67,7 +67,7 @@ describe('Blog app', function () {
       cy.contains('view').click()
       cy.contains('remove').click()
       cy.on('window:confirm', () => true)
-      cy.contains('testtitle').find('elementSelector').should('not.exist');
+      cy.contains('testtitle').find('elementSelector').should('not.exist')
     })
 
     it('Blog can be removed only by the user who added it', function() {
@@ -76,7 +76,7 @@ describe('Blog app', function () {
       cy.get('#password').type('testpassword2')
       cy.get('#login-button').click()
       cy.contains('view').click()
-      cy.contains('remove').find('elementSelector').should('not.exist');
+      cy.contains('remove').find('elementSelector').should('not.exist')
     })
   })
 
@@ -118,9 +118,9 @@ describe('Blog app', function () {
         .click()
         .wait(200)
 
-        cy.get('.blog').eq(0).should('contain', 'The title with the most likes')
-        cy.get('.blog').eq(1).should('contain', 'The title with the second most likes')
-        cy.get('.blog').eq(2).should('contain', 'The title with the least likes')
+      cy.get('.blog').eq(0).should('contain', 'The title with the most likes')
+      cy.get('.blog').eq(1).should('contain', 'The title with the second most likes')
+      cy.get('.blog').eq(2).should('contain', 'The title with the least likes')
     })
   })
 })
