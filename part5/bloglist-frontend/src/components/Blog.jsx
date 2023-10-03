@@ -1,7 +1,7 @@
 import Togglable from './Togglable'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, blogs, setBlogs, handleLike, handleRemove }) => {
+const Blog = ({ blog, handleLike, handleRemove }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -10,7 +10,7 @@ const Blog = ({ blog, blogs, setBlogs, handleLike, handleRemove }) => {
     marginBottom: 5
   }
 
-  const showWhenAuthorized = { display: blog.user.name === JSON.parse(window.localStorage.getItem('loggedBlogappUser')).username ? '' : 'none' }
+  const showWhenAuthorized = { display: blog.user.username === JSON.parse(window.localStorage.getItem('loggedBlogappUser')).username ? '' : 'none' }
   return (
     <div className='blog' style={blogStyle}>
       {blog.title}

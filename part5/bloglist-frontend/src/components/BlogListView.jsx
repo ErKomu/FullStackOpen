@@ -41,11 +41,13 @@ const BlogListView = ({ blogs, setBlogs, setNotification, user, setUser }) => {
   const handleCreateBlog = async (blogObject) => {
     try {
       const blog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(blog))
+      const updatedBlogs = [...blogs, blog]
+      await setBlogs(updatedBlogs)
       setNotification({ message: `Added ${blog.title}`, type: 'notification' })
       setTimeout(() => {
         setNotification('')
       }, 5000)
+
     } catch (exception) {
       console.log(exception)
       setNotification({ message: 'Adding Blog Failed', type: 'error' })
@@ -62,14 +64,14 @@ const BlogListView = ({ blogs, setBlogs, setNotification, user, setUser }) => {
       </Togglable>
       <h2>blogs</h2>
       <p>{user.name} logged in</p>
-      <button onClick={handleLogout}>logout</button>
+      <button id='logout-button' onClick={handleLogout}>logout</button>
       {blogs
         .sort((a, b) => b.likes - a.likes)
         .map(blog => {
           console.log(blog)
           return(
           <div key={blog.id}>
-            <Blog blog={blog} blogs={blogs} setBlogs={setBlogs} handleLike={handleLike} handleRemove={handleRemove} />
+            <Blog blog={blog} handleLike={handleLike} handleRemove={handleRemove} />
             <br />
           </div>
         )})}
