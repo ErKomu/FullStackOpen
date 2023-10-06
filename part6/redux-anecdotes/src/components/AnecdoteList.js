@@ -10,9 +10,13 @@ const AnecdoteList = () => {
         dispatch(voteAnecdote(id))
     }
 
+    console.log('AnecdoteList: ', anecdotes.anecdoteList)
+
     return (
         <div>
-            {anecdotes.map(anecdote =>
+            {anecdotes.anecdoteList
+            .filter(anecdote => anecdote.content.toLowerCase().includes(anecdotes.anecdoteFilter.toLowerCase()))
+            .map(anecdote =>
                 <div key={anecdote.id}>
                     <div>
                         {anecdote.content}
