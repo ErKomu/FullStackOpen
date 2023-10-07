@@ -1,0 +1,48 @@
+POST https://www.hs.fi/v2/stats/asset-view-start HTTP/1.1
+Host: er.sanoma-sndp.fi
+Accept: */*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: fi-FI,fi;q=0.9,en-US;q=0.8,en;q=0.7,sv;q=0.6
+Content-Type: application/json
+Content-Length: 0
+Origin: https://www.hs.fi
+Referer: https://www.hs.fi/
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36
+
+{
+  "core": {
+    "brand": "hs",
+    "source": "other",
+    "visitID": "a8c8dbb7",
+    "nodeID": 368
+  },
+  "asset": {
+    "assetID": 2000009858166,
+    "hasAccessToAsset": false
+  },
+  "assetView": {
+    "fromImpression": false
+  },
+  "device": {
+    "clientAppID": "web",
+    "deviceTime": 1696694942,
+    "viewportSize": "XL"
+  },
+  "user": {
+    "consent": ["sppd-0", "spcx-0", "spam-0", "spma-0", "spad-0", "spem-0"],
+    "entitlements": [],
+    "isSubscriber": false,
+    "loggedIn": false,
+    "profileID": "de2831f0-22d6-4cf8-bd43-9df5fbd124cb",
+    "testGroups": {
+      "frontpage": "tg23-04-03",
+      "alsoreadthese": "pe"
+    }
+  },
+  "location": {},
+  "view": {
+    "viewInstanceID": "313f0ffb-3077-4cb5-ad32-43935a7837ee"
+  },
+  "referrer": "",
+  "url": "https://www.hs.fi/kuukausiliite/art-2000009858166.html"
+}
