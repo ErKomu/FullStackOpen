@@ -4,12 +4,11 @@ const initialState = {
   message: ''
 }
 
-export const showNotification = content => dispatch => {
+export const showNotification = (content, timeInSeconds) => dispatch => {
     dispatch(setNotification(content))
-    console.log('showNotification: ', content)
     setTimeout(() => {
       dispatch(clearNotification())
-    }, 5000)
+    }, timeInSeconds * 1000)
   }
   
 

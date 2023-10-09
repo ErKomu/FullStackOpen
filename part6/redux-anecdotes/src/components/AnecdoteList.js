@@ -9,10 +9,8 @@ const AnecdoteList = () => {
 
     const vote = (id) => {
         dispatch(voteAnecdote(id))
-        dispatch(showNotification(`You voted: ${anecdotes.anecdoteList.find(anecdote => anecdote.id === id).content}`))
+        dispatch(showNotification(`You voted: ${anecdotes.anecdoteList.find(anecdote => anecdote.id === id).content}`, 5))
     }
-      
-    console.log('AnecdoteList: ', anecdotes.anecdoteList)
 
     return (
         <div>
