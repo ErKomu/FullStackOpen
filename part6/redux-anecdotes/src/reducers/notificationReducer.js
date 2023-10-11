@@ -11,7 +11,6 @@ export const showNotification = (content, timeInSeconds) => dispatch => {
     }, timeInSeconds * 1000)
   }
   
-
 const notificationsSlice = createSlice({
   name: 'notifications',
   initialState,
