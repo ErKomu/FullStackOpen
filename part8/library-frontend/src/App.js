@@ -32,6 +32,10 @@ const App = () => {
   const allAuthors = useQuery(ALL_AUTHORS)
   console.log(allAuthors.data)
 
+  if (allBooks.loading || allAuthors.loading) {
+    return <div>loading...</div>
+  }
+
   return (
     <div>
       <div>
@@ -40,9 +44,9 @@ const App = () => {
         <button onClick={() => setPage('add')}>add book</button>
       </div>
 
-      <Authors authors={allAuthors.data} show={page === 'authors'} />
+      <Authors authors={allAuthors.data.allAuthors} show={page === 'authors'} />
 
-      <Books books={allBooks.data} show={page === 'books'} />
+      <Books books={allBooks.data.allBooks} show={page === 'books'} />
 
       <NewBook show={page === 'add'} />
 
