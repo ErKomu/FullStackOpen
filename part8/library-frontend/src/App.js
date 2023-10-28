@@ -27,9 +27,13 @@ query AllAuthors {
 const App = () => {
   const [page, setPage] = useState('authors')
 
-  const allBooks = useQuery(ALL_BOOKS)
+  const allBooks = useQuery(ALL_BOOKS, {
+    pollInterval: 2000
+  })
   console.log(allBooks.data)
-  const allAuthors = useQuery(ALL_AUTHORS)
+  const allAuthors = useQuery(ALL_AUTHORS, {
+    pollInterval: 2000
+  })
   console.log(allAuthors.data)
 
   if (allBooks.loading || allAuthors.loading) {
