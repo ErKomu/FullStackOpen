@@ -165,7 +165,16 @@ const resolvers = {
             return Book.find(query).populate('author')
         },
         allAuthors: async () => {
-            return Author.find({})
+            const authors = await Author.find({})
+            const authorPromises = authors.map(async author => {
+                const bookCount = await Book.countDocuments({ author: author._id })
+                return {
+                    name: author.name,
+                    born: author.born,
+                    bookCount
+                }
+            })
+            return Promise.all(authorPromises)
         }
     },
     Mutation: {
