@@ -202,6 +202,14 @@ const resolvers = {
     },
     Mutation: {
         addBook: async (root, args) => {
+            if (!context.currentUser) {
+                throw new GraphQLError('Unauthorized', {
+                    extensions: {
+                        code: 'UNAUTHORIZED'
+                    }
+                })
+            }
+            
             try {
                 let author = await Author.findOne({ name: args.author })
                 if (!author) {
@@ -223,12 +231,29 @@ const resolvers = {
             }
         },
         editAuthor: async (root, args) => {
+            if (!context.currentUser) {
+                throw new GraphQLError('Unauthorized', {
+                    extensions: {
+                        code: 'UNAUTHORIZED'
+                    }
+                })
+            }
+            try{
             const author = await Author.findOneAndUpdate(
                 { name: args.name },
                 { born: args.setBornTo },
                 { new: true }
             )
             return author
+            } catch (error) {
+                throw new GraphQLError('Editing author failed', {
+                    extensions: {
+                        code: 'BAD_USER_INPUT',
+                        invalidArgs: args.name,
+                        error
+                    }
+                })
+            }
         },
         createUser: async (root, args) => {
             const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre })
