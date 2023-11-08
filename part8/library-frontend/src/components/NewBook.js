@@ -2,18 +2,39 @@ import { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
 
 const CREATE_BOOK = gql`
-mutation createBook($title: String!, $author: String!, $publishedInt: Int!, $genres: [String!]!){
-  addBook(
-    title: $title,
-    author: $author,
-    published: $publishedInt,
-    genres: $genres
-  ) {
-    title,
-    author
+mutation createBook($title: String!, $published: Int!, $author: String!, $genres: [String!]!){
+    addBook(title: $title, published: $published, author: $author, genres: $genres) {
+      title
+      published
+      author {
+        name
+        born
+      }
+      genres
   }
 }
 `
+
+
+/*const CREATE_BOOK = gql`
+mutation {
+  addBook(
+    title: "testi5"
+    published: 2023
+    author: "test"
+    genres: ["genre1", "genre2"]
+  ) {
+    title
+    published
+    author {
+      name
+      born
+    }
+    genres
+  }
+}
+`
+*/
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
@@ -22,7 +43,7 @@ const NewBook = (props) => {
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
 
-  const [ createPerson ] = useMutation(CREATE_BOOK)
+  const [ createBook ] = useMutation(CREATE_BOOK)
 
   if (!props.show) {
     return null
@@ -31,8 +52,9 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault()
 
-    let publishedInt = parseInt(published)
-    createPerson({  variables: { title, author, publishedInt, genres } })
+    const publishedInt = parseInt(published)
+    console.log('Submitting book with variables:', { title, author, published: publishedInt, genres })
+    createBook({  variables: { title, author, published: publishedInt, genres } })
     console.log('add book...')
 
     setTitle('')
@@ -89,3 +111,4 @@ const NewBook = (props) => {
 }
 
 export default NewBook
+

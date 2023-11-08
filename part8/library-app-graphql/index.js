@@ -201,36 +201,45 @@ const resolvers = {
         
     },
     Mutation: {
-        addBook: async (root, args) => {
-            if (!context.currentUser) {
-                throw new GraphQLError('Unauthorized', {
-                    extensions: {
-                        code: 'UNAUTHORIZED'
-                    }
-                })
+        addBook: async (root, args, context) => {
+          console.log('addBook called with args:', args)
+      
+          if (!context.currentUser) {
+            console.log('Add book failed unauthorized')
+            throw new GraphQLError('Unauthorized', {
+              extensions: {
+                code: 'UNAUTHORIZED'
+              }
+            })
+          }
+      
+          try {
+            let author = await Author.findOne({ name: args.author })
+            console.log('Author found:', author)
+      
+            if (!author) {
+              author = new Author({ name: args.author })
+              await author.save()
+              console.log('Author created:', author)
             }
-            
-            try {
-                let author = await Author.findOne({ name: args.author })
-                if (!author) {
-                    author = new Author({ name: args.author })
-                    await author.save()
-                }
-                const book = new Book({ ...args, author: author._id })
-            
-                await book.save()
-                return Book.findById(book._id).populate('author')
-            } catch (error) {
-                throw new GraphQLError('Saving book failed', {
-                    extensions: {
-                        code: 'BAD_USER_INPUT',
-                        invalidArgs: args.name,
-                        error
-                    }
-                })
-            }
+      
+            const book = new Book({ ...args, author: author._id })
+            await book.save()
+            console.log('Book created:', book)
+      
+            return Book.findById(book._id).populate('author')
+          } catch (error) {
+            console.error('Saving book failed:', error)
+            throw new GraphQLError('Saving book failed', {
+              extensions: {
+                code: 'BAD_USER_INPUT',
+                invalidArgs: args.name,
+                error
+              }
+            })
+          }
         },
-        editAuthor: async (root, args) => {
+        editAuthor: async (root, args, context) => {
             if (!context.currentUser) {
                 throw new GraphQLError('Unauthorized', {
                     extensions: {
