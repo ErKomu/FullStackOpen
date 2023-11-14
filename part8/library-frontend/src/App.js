@@ -3,7 +3,7 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
-import Recommend from './components/Recommend'
+import Recommendations from './components/Recommendations'
 import { useQuery, useApolloClient, useSubscription } from '@apollo/client'
 import { ALL_BOOKS, ALL_AUTHORS, BOOK_ADDED } from './queries'
 
@@ -37,7 +37,7 @@ const App = () => {
 
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
-      console.log(subscriptionData)
+      //console.log(subscriptionData)
       const addedBook = subscriptionData.data.bookAdded
       window.alert(`New book added: ${addedBook.title} by ${addedBook.author.name}`)
       updateCache(client.cache, { query: ALL_BOOKS }, addedBook)
@@ -50,7 +50,6 @@ const App = () => {
     }
   })
   
-
   if (allBooks.loading || allAuthors.loading) {
     return <div>loading...</div>
   }
@@ -78,7 +77,7 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
-        <button onClick={() => setPage('recommend')}>recommend</button>
+        <button onClick={() => setPage('recommendations')}>recommendations</button>
         <button onClick={() => logout()}>logout</button>
       </div>
 
@@ -86,7 +85,7 @@ const App = () => {
 
       <Books books={allBooks.data.allBooks} show={page === 'books'} />
 
-      <Recommend show={page === 'recommend'} favoriteGenre={'action'} />
+      <Recommendations show={page === 'recommendations'} />
 
       <NewBook show={page === 'add'} />
 

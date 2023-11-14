@@ -1,19 +1,15 @@
 import { useQuery } from '@apollo/client'
-import { ALL_BOOKS } from '../queries'
+import { ALL_BOOKS, USER_INFO } from '../queries'
 
-const RecommendForNow = (props) => {
-    if (!props.show) {
-        return null
-    }
-    return props.genre
-}
+const Recommendations = (props) => {
 
-const Recommend = (props) => {
-
-  const genre = props.favoriteGenre
+  const userInfo = useQuery(USER_INFO)
+  const genre = userInfo.data ? userInfo.data.me.favoriteGenre : ''
 
   const data = useQuery(ALL_BOOKS, { variables: { genre } })
-  const books = data ? data.allBooks : []
+  //console.log('data: ', data)
+  const books = data.loading ? [] : data.data.allBooks
+  //console.log('books: ', books)
 
   if (!props.show) {
     return null
@@ -21,8 +17,8 @@ const Recommend = (props) => {
 
   return (
     <div>
-      <h2>recommend</h2>
-
+      <h2>recommendations</h2>
+      <p>books in your favorite genre <strong>{genre}</strong></p>
       <table>
         <tbody>
           <tr>
@@ -43,4 +39,4 @@ const Recommend = (props) => {
   )
 }
 
-export default RecommendForNow
+export default Recommendations

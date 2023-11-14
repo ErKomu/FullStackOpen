@@ -35,8 +35,7 @@ export const ALL_AUTHORS = gql`
 query AllAuthors {
   allAuthors {
    name  
-   bookCount
-   born
+   bookCount @defer
   }
 }
 `
@@ -48,6 +47,15 @@ mutation createBook($name: String!, $bornInt: Int!){
       born
   }
 }
+`
+
+export const USER_INFO = gql`
+query me {
+    me {
+      username
+      favoriteGenre
+    }
+  }
 `
 
 export const BOOK_ADDED = gql`
