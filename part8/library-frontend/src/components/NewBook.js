@@ -15,27 +15,6 @@ mutation createBook($title: String!, $published: Int!, $author: String!, $genres
 }
 `
 
-
-/*const CREATE_BOOK = gql`
-mutation {
-  addBook(
-    title: "testi5"
-    published: 2023
-    author: "test"
-    genres: ["genre1", "genre2"]
-  ) {
-    title
-    published
-    author {
-      name
-      born
-    }
-    genres
-  }
-}
-`
-*/
-
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -53,7 +32,7 @@ const NewBook = (props) => {
     event.preventDefault()
 
     const publishedInt = parseInt(published)
-    console.log('Submitting book with variables:', { title, author, published: publishedInt, genres })
+    //console.log('Submitting book with variables:', { title, author, published: publishedInt, genres })
     createBook({  variables: { title, author, published: publishedInt, genres } })
     console.log('add book...')
 

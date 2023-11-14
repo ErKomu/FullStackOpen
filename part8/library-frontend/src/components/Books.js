@@ -1,9 +1,24 @@
+import { useState } from 'react'
+import { useQuery } from '@apollo/client'
+import { ALL_BOOKS } from '../queries'
+
 const Books = (props) => {
+
+  const [genre, setGenre] = useState('')
+
+  const { data, refetch } = useQuery(ALL_BOOKS, { variables: { genre } })
+  //console.log('data: ', data)
+  const books = data ? data.allBooks : []
+
+  const handleGenreChange = async (newGenre) => {
+    setGenre(newGenre)
+    await refetch({ genre: newGenre })
+    //console.log(books)
+  }
+
   if (!props.show) {
     return null
   }
-
-  const books = props.books
 
   return (
     <div>
@@ -25,6 +40,12 @@ const Books = (props) => {
           ))}
         </tbody>
       </table>
+      <button onClick={() => handleGenreChange('refactoring')}>refactoring</button>
+      <button onClick={() => handleGenreChange('agile')}>agile</button>
+      <button onClick={() => handleGenreChange('design')}>design</button>
+      <button onClick={() => handleGenreChange('crime')}>crime</button>
+      <button onClick={() => handleGenreChange('classic')}>classic</button>
+      <button onClick={() => handleGenreChange('')}>all genres</button>
     </div>
   )
 }
