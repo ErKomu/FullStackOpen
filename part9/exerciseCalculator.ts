@@ -8,7 +8,7 @@ interface ExerciseResult {
     average: number;
 }
 
-const calculateExercises = (
+export const calculateExercises = (
     dailyHours: number[],
     target: number
 ): ExerciseResult => {
@@ -24,13 +24,13 @@ const calculateExercises = (
 
     if (average < target / 2) {
         rating = 1;
-        ratingDescription = 'poor';
+        ratingDescription = 'bad';
     } else if (average >= target / 2 && average < target) {
         rating = 2;
         ratingDescription = 'not too bad but could be better';
     } else {
         rating = 3;
-        ratingDescription = 'excellent';
+        ratingDescription = 'very good if not perfect';
     }
 
     return {

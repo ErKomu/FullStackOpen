@@ -3,7 +3,7 @@ interface BmiResult {
     message: string;
 }
 
-const calculateBmi = (height: number, weight: number): BmiResult => {
+export const calculateBmi = (height: number, weight: number): BmiResult => {
     const heightInM = height / 100;
     const bmi = weight / (heightInM * heightInM);
 
@@ -30,4 +30,5 @@ if (bmiArgs.some(isNaN)) {
     const bmiResult = calculateBmi(bmiArgs[0], bmiArgs[1]);
     console.log(bmiResult.message);
 }
+
 
