@@ -24,7 +24,7 @@ app.get('/bmi', (_req, _res) => {
 
     console.log(_req.body);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { daily_exercises, target } = _req.body;
   
     if (!daily_exercises || !target) {
@@ -34,7 +34,8 @@ app.get('/bmi', (_req, _res) => {
     if (isNaN(Number(target)) || !Array.isArray(daily_exercises)) {
       return _res.status(400).json({ error: 'malformatted parameters' });
     }
-  
+    
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const result = calculateExercises(daily_exercises, target);
     return _res.json(result);
   });
