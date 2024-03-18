@@ -1,0 +1,7 @@
+.diary-entry {
+    margin: 1rem; /* Adding margin to the top and bottom of each course part */
+  }
+  
+  .diary-entry p {
+    margin: 0; /* Removing margin for paragraphs inside each course part */
+  }
