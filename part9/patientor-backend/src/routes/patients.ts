@@ -1,7 +1,7 @@
 import express from 'express';
 import patientService from '../services/patientService';
-//import { setTokenSourceMapRange } from 'typescript';
 import toNewPatient from '../utils';
+//import toNewEntry from '../utils';
 
 const router = express.Router();
 
@@ -9,17 +9,17 @@ router.get('/', (_req, res) => {
     res.send(patientService.getNonSensitivePatientInfo());
 });
 
+router.get('/:id', (req, res) => {
+    console.log('Patients by id called');
+    res.send(patientService.getPatientById(req.params.id));
+});
 
 router.post('/', (req, res) => {
         try {
             const newPatient = toNewPatient(req.body);
     
             const addedPatient = patientService.addPatient(
-                newPatient.name,
-                newPatient.dateOfBirth,
-                newPatient.ssn,
-                newPatient.gender,
-                newPatient.occupation
+                newPatient
             );
             res.json(addedPatient);
         } catch (error: unknown) {
@@ -29,6 +29,13 @@ router.post('/', (req, res) => {
             }
             res.status(400).send(errorMessage);
         }
-})
+});
+
+router.post('/:id/entries', (req, res) => {
+    const patient = patientService.getPatientById(req.params.id);
+    if( patient === undefined ){
+        res.status(404).send('patient not found')
+    }
+});
 
 export default router;

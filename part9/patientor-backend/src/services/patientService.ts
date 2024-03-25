@@ -6,29 +6,26 @@ const getPatients = (): Patient[] => {
   return patientsData;
 };
 
+const getPatientById = (id: string): Patient | undefined => {
+  return patientsData.find(patient => patient.id === id);
+};
+
 const getNonSensitivePatientInfo = (): NonSensitivePatientInfo => {
-    return patientsData.map(({ id, name, dateOfBirth, gender, occupation }) => ({
+    return patientsData.map(({ id, name, dateOfBirth, gender, occupation, entries }) => ({
         id,
         name,
         dateOfBirth,
         gender,
         occupation,
+        entries,
     }));
   };
 
-  const addPatient = (
-     name: string, dateOfBirth: string, ssn: string, gender: string, occupation: string
-  ): NewPatient => {
-
-    const id = uuid();
-
+const addPatient = ( entry: NewPatient ): Patient => {
+  const id = uuid();
   const newPatient = {
-    id: id,
-    name,
-    dateOfBirth,
-    ssn,
-    gender,
-    occupation,
+    id,
+    ...entry
   };
 
   patientsData.push(newPatient);
@@ -37,6 +34,7 @@ const getNonSensitivePatientInfo = (): NonSensitivePatientInfo => {
 
 export default {
   getPatients,
+  getPatientById,
   getNonSensitivePatientInfo,
   addPatient
 };
