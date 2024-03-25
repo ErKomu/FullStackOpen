@@ -1,75 +1,77 @@
-import { Entry } from "../../types";
-import { HospitalEntry, OccupationalHealthcareEntry, HealthCheckEntry } from "../../types";
-import { Typography, List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
-import { LocalHospital, Work, Healing } from '@mui/icons-material';
+import { Diagnosis, Entry, EntryWithoutId } from "../../types";
+import { List, ListItem, ListItemText } from '@mui/material';
 
-const EntryDetails = ({ entry }: { entry: Entry }) => {
+interface EntryDetailsProps {
+  entry: EntryWithoutId;
+  diagnoses: Diagnosis[]; 
+}
+
+const EntryDetails: React.FC<EntryDetailsProps> = ({ entry, diagnoses }) => {
+ 
   switch (entry.type) {
     case "Hospital":
       return (
         <div>
-          <Typography variant="h6">Hospital Entry</Typography>
           <List>
             <ListItem>
-              <ListItemIcon>
-                <LocalHospital />
-              </ListItemIcon>
-              <ListItemText primary={`Date: ${entry.date}`} />
+              <ListItemText primary={`${entry.date} ${entry.description}`} />
             </ListItem>
-            <ListItem>
-              <ListItemText primary={`Description: ${entry.description}`} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary={`Discharge: ${entry.discharge.date}`} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary={`Criteria: ${entry.discharge.criteria}`} />
-            </ListItem>
+            <List>
+              {entry.diagnosisCodes?.map((code, index) => {
+                const diagnosis = diagnoses.find(d => d.code === code);
+                const description = diagnosis ? diagnosis.name : 'Description not available';
+
+                return (
+                  <ListItem key={index}>
+                    <ListItemText primary={`${code}: ${description}`} />
+                  </ListItem>
+                );
+              })}
+            </List>       
           </List>
         </div>
       );
     case "OccupationalHealthcare":
       return (
         <div>
-          <Typography variant="h6">Occupational Healthcare Entry</Typography>
           <List>
             <ListItem>
-              <ListItemIcon>
-                <Work />
-              </ListItemIcon>
-              <ListItemText primary={`Date: ${entry.date}`} />
+              <ListItemText primary={`${entry.date} ${entry.description}`} />
             </ListItem>
-            <ListItem>
-              <ListItemText primary={`Description: ${entry.description}`} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary={`Employer: ${entry.employerName}`} />
-            </ListItem>
-            {entry.sickLeave && (
-              <ListItem>
-                <ListItemText primary={`Sick Leave: ${entry.sickLeave.startDate} - ${entry.sickLeave.endDate}`} />
-              </ListItem>
-            )}
+            <List>
+              {entry.diagnosisCodes?.map((code, index) => {
+                const diagnosis = diagnoses.find(d => d.code === code);
+                const description = diagnosis ? diagnosis.name : 'Description not available';
+
+                return (
+                  <ListItem key={index}>
+                    <ListItemText primary={`${code}: ${description}`} />
+                  </ListItem>
+                );
+              })}
+            </List>       
           </List>
         </div>
       );
     case "HealthCheck":
       return (
         <div>
-          <Typography variant="h6">Health Check Entry</Typography>
           <List>
             <ListItem>
-              <ListItemIcon>
-                <Healing />
-              </ListItemIcon>
-              <ListItemText primary={`Date: ${entry.date}`} />
+              <ListItemText primary={`${entry.date} ${entry.description}`} />
             </ListItem>
-            <ListItem>
-              <ListItemText primary={`Description: ${entry.description}`} />
-            </ListItem>
-            <ListItem>
-              <ListItemText primary={`Health Check Rating: ${entry.healthCheckRating}`} />
-            </ListItem>
+            <List>
+              {entry.diagnosisCodes?.map((code, index) => {
+                const diagnosis = diagnoses.find(d => d.code === code);
+                const description = diagnosis ? diagnosis.name : 'Description not available';
+
+                return (
+                  <ListItem key={index}>
+                    <ListItemText primary={`${code}: ${description}`} />
+                  </ListItem>
+                );
+              })}
+            </List>       
           </List>
         </div>
       );

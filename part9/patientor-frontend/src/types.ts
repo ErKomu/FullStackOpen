@@ -67,7 +67,13 @@ dateOfBirth: string;
 entries: EntryWithoutId[];
 }
 
-export type NewPatient = Omit<Patient, 'id'>;
+export interface NewPatient {
+  name: string;
+  ssn: string;
+  occupation: string;
+  gender: Gender;
+  dateOfBirth: string;
+}
 
 export type NonSensitivePatientInfo = Omit<Patient, 'ssn'>[];
 
