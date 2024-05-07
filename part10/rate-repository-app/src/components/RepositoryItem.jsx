@@ -27,7 +27,7 @@ const RepositoryItem = ({ item }) => {
         },
         headerTexts: {
             flexGrow: 0,
-            padding: 10,
+            maxWidth: '80%',
         },
         statsContainer: {
             flexGrow: 1,
@@ -56,7 +56,7 @@ const RepositoryItem = ({ item }) => {
         <View style={styles.flexContainer}>
             <View style={styles.headerContainer}>
                 <Logo source={item.ownerAvatarUrl} />
-                <View>
+                <View style={styles.headerTexts}>
                     <Text fontWeight="bold" fontSize="subheading">
                         {item.fullName}
                     </Text>
